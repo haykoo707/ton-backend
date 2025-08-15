@@ -8,18 +8,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Persistent disk path (Render mount path)
-const USERS_FILE = path.join("/data", "users.txt");
+const USERS_FILE = path.join(__dirname, "users.txt");
 
-// Ensure /data folder and file exist
-if (!fs.existsSync("/data")) {
-    fs.mkdirSync("/data");
-}
-if (!fs.existsSync(USERS_FILE)) {
-    fs.writeFileSync(USERS_FILE, "");
-}
-
-// Save wallet endpoint
 app.post("/save-wallet", (req, res) => {
     const { username, wallet } = req.body;
     if (!wallet) {
@@ -37,23 +27,6 @@ app.post("/save-wallet", (req, res) => {
     });
 });
 
-// Get last 20 wallets
-app.get("/wallets", (req, res) => {
-    try {
-        const lines = fs.readFileSync(USERS_FILE, "utf8").trim().split("\n");
-        const last20 = lines.slice(-20);
-        res.json({ wallets: last20 });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to read wallets" });
-    }
-});
-
-// Root endpoint
-app.get("/", (req, res) => {
-    res.send("✅ TON Wallet Backend is running. Use POST /save-wallet or GET /wallets");
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
+app.listen(3000, () => {
+    console.log("✅ Server running on http://localhost:3000");
 });
