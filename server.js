@@ -8,8 +8,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Ստեղծում ենք users.txt ֆայլի path
 const USERS_FILE = path.join(__dirname, "users.txt");
 
+// Root route (Render browser-ում բացելու համար)
+app.get("/", (req, res) => {
+  res.send("✅ Server is running. Use POST /save-wallet to save wallets.");
+});
+
+// POST route wallet պահելու համար
 app.post("/save-wallet", (req, res) => {
     const { username, wallet } = req.body;
     if (!wallet) {
@@ -27,6 +34,9 @@ app.post("/save-wallet", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("✅ Server running on http://localhost:3000");
+// Render-ում port ստանում ենք environment variable-ից
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`✅ Server running on port ${PORT}`);
 });
+
