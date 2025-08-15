@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const USERS_FILE = path.join(__dirname, "users.txt");
+const USERS_FILE = "/data/users.txt";
 
 app.post("/save-wallet", (req, res) => {
     const { username, wallet } = req.body;
@@ -30,3 +30,4 @@ app.post("/save-wallet", (req, res) => {
 app.listen(3000, () => {
     console.log("✅ Server running on http://localhost:3000");
 });
+
